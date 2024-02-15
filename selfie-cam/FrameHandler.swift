@@ -1,9 +1,11 @@
 import SwiftUI
 import AVFoundation
 import CoreImage
+import RealityKit
 
 class FrameHandler: NSObject, ObservableObject {
     @Published var frame: CGImage?
+    @Published var texture: MaterialParameters.Texture?
     private var permissionGranted = true
     private let sessionQueue = DispatchQueue(label: "sessionQueue")
     private let captureSession = AVCaptureSession()
@@ -59,7 +61,15 @@ extension FrameHandler: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard let cgImage = imageFromSampleBuffer(sampleBuffer: sampleBuffer) else { return }
         
-        // All UI updates should be/ must be performed on the main queue.
+        do {
+            let texture = try MaterialParameters.Texture.init(TextureResource.generate(from: cgImage, options: .init(semantic: .raw)))
+            DispatchQueue.main.async { [unowned self] in
+                self.texture = texture
+            }
+        } catch {
+            print("error")
+        }
+        
         DispatchQueue.main.async { [unowned self] in
             self.frame = cgImage
         }
