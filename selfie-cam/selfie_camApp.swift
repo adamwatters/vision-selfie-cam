@@ -8,6 +8,6 @@ struct selfie_camApp: App {
             ContentView()
         }
         .windowStyle(.volumetric)
-        .defaultSize(width: 0.5, height: 0.5, depth: 0.5, in: .meters)
+        .defaultSize(width: 0.25, height: 0.25, depth: 0.25, in: .meters)
     }
 }

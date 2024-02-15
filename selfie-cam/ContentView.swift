@@ -11,9 +11,12 @@ struct FrameView: View {
     
     var body: some View {
         RealityView { content, attachments in
+            
             let material = PhysicallyBasedMaterial()
-            let videoSphereMesh = MeshResource.generateSphere(radius: 0.2)
+            let videoSphereMesh = MeshResource.generateSphere(radius: 0.1)
             var videoSphere = ModelEntity(mesh: videoSphereMesh, materials: [material])
+            let collisionShape: RealityKit.ShapeResource = .generateSphere(radius: 0.1)
+            videoSphere.components.set(GroundingShadowComponent(castsShadow: true))
             videoSphere.name = "video_sphere"
             videoSphere.orientation = simd_quatf(angle: 1.5708, axis: simd_float3(0,1,0))
             content.add(videoSphere)
