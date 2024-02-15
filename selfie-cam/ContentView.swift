@@ -1,7 +1,6 @@
 
 import SwiftUI
 import RealityKit
-import RealityKitContent
 import AVFoundation
 import CoreImage
 
