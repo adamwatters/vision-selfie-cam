@@ -1,11 +1,16 @@
 import SwiftUI
 import AVFoundation
 import CoreImage
+import CoreImage.CIFilterBuiltins
 import RealityKit
+import CoreML
+import CoreMedia
+import Vision
 
 class FrameHandler: NSObject, ObservableObject {
     @Published var frame: CGImage?
     @Published var texture: MaterialParameters.Texture?
+    @Published var opacityTexture: MaterialParameters.Texture?
     private var permissionGranted = true
     private let sessionQueue = DispatchQueue(label: "sessionQueue")
     private let captureSession = AVCaptureSession()
@@ -59,12 +64,46 @@ class FrameHandler: NSObject, ObservableObject {
 
 extension FrameHandler: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        guard let cgImage = imageFromSampleBuffer(sampleBuffer: sampleBuffer) else { return }
+        var result = imageFromSampleBuffer(sampleBuffer: sampleBuffer)
+        guard var ciImage = result else { return }
+        var cgImage: CGImage?
+        var opactiyCgImage: CGImage?
+        var maskImage = CIImage.empty()
+        
+        let request = VNGenerateForegroundInstanceMaskRequest()
+        let handler = VNImageRequestHandler(ciImage: ciImage)
+        do {
+            try handler.perform([request])
+        } catch {
+            print(error)
+        }
+        if let foregroundResult = request.results?.first {
+            print("here")
+            if let pixelBuffer = try? foregroundResult.generateScaledMaskForImage(forInstances: foregroundResult.allInstances, from: handler) {
+                maskImage = CIImage(cvPixelBuffer: pixelBuffer)
+//                cgImage = context.createCGImage(ciImage, from: ciImage.extent)!
+            }
+        }
+    
+        let filter = CIFilter.blendWithMask()
+        filter.inputImage = ciImage
+        filter.maskImage = maskImage
+        filter.backgroundImage = CIImage.empty()
+        var filteredCIImage = filter.outputImage
+        
+        if let filteredCIImage {
+            cgImage = context.createCGImage(filteredCIImage, from: filteredCIImage.extent)!
+            opactiyCgImage = context.createCGImage(maskImage, from: maskImage.extent)
+        }
+        
+        guard let cgImage, let opactiyCgImage else {return}
         
         do {
             let texture = try MaterialParameters.Texture.init(TextureResource.generate(from: cgImage, options: .init(semantic: .raw)))
+            let opacityTexture = try MaterialParameters.Texture.init(TextureResource.generate(from: opactiyCgImage, options: .init(semantic: .raw)))
             DispatchQueue.main.async { [unowned self] in
                 self.texture = texture
+                self.opacityTexture = opacityTexture
             }
         } catch {
             print("error")
@@ -75,12 +114,10 @@ extension FrameHandler: AVCaptureVideoDataOutputSampleBufferDelegate {
         }
     }
     
-    private func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> CGImage? {
+    private func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> CIImage? {
         guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return nil }
         let ciImage = CIImage(cvPixelBuffer: imageBuffer)
-        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else { return nil }
-        
-        return cgImage
+        return ciImage
     }
     
 }

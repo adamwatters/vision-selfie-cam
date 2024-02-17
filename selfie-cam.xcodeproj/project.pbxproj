@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3503964A2B813CE50075D702 /* DeepLabV3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 350396492B813CE50075D702 /* DeepLabV3.mlmodel */; };
+		3503964C2B813CEB0075D702 /* FCRN.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 3503964B2B813CEB0075D702 /* FCRN.mlmodel */; };
 		35BB4FD62B7DB4FE00C89020 /* selfie_camApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BB4FD52B7DB4FE00C89020 /* selfie_camApp.swift */; };
 		35BB4FD82B7DB4FE00C89020 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BB4FD72B7DB4FE00C89020 /* ContentView.swift */; };
 		35BB4FDC2B7DB4FF00C89020 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35BB4FDB2B7DB4FF00C89020 /* Assets.xcassets */; };
@@ -14,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		350396492B813CE50075D702 /* DeepLabV3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = DeepLabV3.mlmodel; path = ../../../Downloads/DeepLabV3.mlmodel; sourceTree = "<group>"; };
+		3503964B2B813CEB0075D702 /* FCRN.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = FCRN.mlmodel; path = ../../../Downloads/FCRN.mlmodel; sourceTree = "<group>"; };
 		35BB4FCE2B7DB4FE00C89020 /* selfie-cam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "selfie-cam.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35BB4FD52B7DB4FE00C89020 /* selfie_camApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = selfie_camApp.swift; sourceTree = "<group>"; };
 		35BB4FD72B7DB4FE00C89020 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -57,6 +61,8 @@
 				35BB4FDB2B7DB4FF00C89020 /* Assets.xcassets */,
 				35BB4FE02B7DB4FF00C89020 /* Info.plist */,
 				35BB4FEA2B7DEA1300C89020 /* FrameHandler.swift */,
+				350396492B813CE50075D702 /* DeepLabV3.mlmodel */,
+				3503964B2B813CEB0075D702 /* FCRN.mlmodel */,
 			);
 			path = "selfie-cam";
 			sourceTree = "<group>";
@@ -133,8 +139,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				35BB4FD82B7DB4FE00C89020 /* ContentView.swift in Sources */,
+				3503964C2B813CEB0075D702 /* FCRN.mlmodel in Sources */,
 				35BB4FD62B7DB4FE00C89020 /* selfie_camApp.swift in Sources */,
 				35BB4FEB2B7DEA1300C89020 /* FrameHandler.swift in Sources */,
+				3503964A2B813CE50075D702 /* DeepLabV3.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +276,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4LJP7QK7UE;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
@@ -296,7 +304,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4LJP7QK7UE;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";

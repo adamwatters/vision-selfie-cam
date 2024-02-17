@@ -7,6 +7,7 @@ import CoreImage
 struct FrameView: View {
     var image: CGImage?
     var texture: MaterialParameters.Texture?
+    var opacityTexture: MaterialParameters.Texture?
     private let label = Text("frame")
     
     var body: some View {
@@ -28,7 +29,9 @@ struct FrameView: View {
                 return entity.name == "video_sphere"
             }) as! ModelEntity
             var material = PhysicallyBasedMaterial()
+            
             material.baseColor = .init(texture: texture)
+            material.blending = .transparent(opacity: .init(texture: opacityTexture))
             sphere.model?.materials = [material]
         } attachments: {
             Attachment(id: "video") {
@@ -46,7 +49,7 @@ struct ContentView: View {
     @StateObject private var model = FrameHandler()
     var body: some View {
         VStack {
-            FrameView(image: model.frame, texture: model.texture)
+            FrameView(image: model.frame, texture: model.texture, opacityTexture: model.opacityTexture)
         }
         .padding()
     }
